@@ -36,9 +36,8 @@ Evaluate expressions with ; to tell the end of a 'line of code' like :
 =>a = 4; b = a +42; c = a * min(a,b) =>184
 </pre>
 
-<pre>
 Structure of the project :
-
+<pre>
 .
 ├── functions
 │   ├── functions.cpp

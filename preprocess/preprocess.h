@@ -2,13 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cctype>
+#include <iostream>
 
 using namespace std;
 
 size_t getSize(char* expression);
-int getSign(char* expression);
+int getSign(char* expression, size_t* idx, size_t size);
 int checkName(char* name);
 int isOperator(char e);
+char* getDigit(char* expression, size_t size);
+int islogicalOperator(char e);
 
 // Remove whitespace ->         3 + 4 => 3+4;
 // Get sign -> +++-++-4 => 4 | ++---++-+---2 => -2;
@@ -20,5 +23,6 @@ int isOperator(char e);
 // Error like this -> -aaa * min(3, ----2) => Error
 // Logical operator -> 6===3 -> Error but -> --++-6== ---++--3 -> -6==-3;
 // Add a ; at the end for the process part
-// If mutliple ;; -> 3++--+4 ;;; -> Error
+// If mutliple ;; -> 3++--+4 ;;; => Error
+// Correct -> -a = 42; => in the next part -> a = -42
 char* preprocessExpression(char* expression);

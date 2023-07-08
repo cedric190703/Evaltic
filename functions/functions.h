@@ -8,7 +8,7 @@ int mul(int a, int b);
 int sous(int a ,int b);
 int modulo(int a ,int b);
 int absF(int a);
-int pow(int a, int b);
+int power(int a, int b);
 int exp(int a);
 int log(int a);
 int log10(int a);
