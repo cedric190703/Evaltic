@@ -1,17 +1,5 @@
 #include "preprocess.h"
 
-size_t getSize(char* expression) {
-    size_t size = 0;
-    while(expression[size]) {
-        size++;
-    }
-    return size;
-}
-
-int isOperator(char e) {
-    return (e == '+' || e == '-' || e == '*' || e == '/' || e == '%' || e == '(' || e == ')') ? 1 : 0;
-}
-
 int getSign(char* expression, size_t* idx, size_t size) {
     int cpt = 0;
     while(*idx < size && (expression[*idx] == '+' || expression[*idx] == '-' || expression[*idx] == ' ')) {
@@ -22,10 +10,6 @@ int getSign(char* expression, size_t* idx, size_t size) {
     }
     *idx = *idx-1;
     return cpt;
-}
-
-int islogicalOperator(char e) {
-    return (e == '=' || e == '<' || e == '>') ? 1 : 0;
 }
 
 char* preprocessExpression(char* expression) {
@@ -46,7 +30,8 @@ char* preprocessExpression(char* expression) {
             } else {
                 // Case series of operations + and -
                 int sign = getSign(expression, &i, size);
-                if(isalpha(lastLetter) || isdigit(lastLetter)) {
+                if(isalpha(lastLetter) || isdigit(lastLetter) || lastLetter == ')') {
+                    cout << i << endl;
                     res[idx] = (sign % 2 == 0) ? '+' : '-';
                     idx++;
                 } else {
@@ -59,6 +44,22 @@ char* preprocessExpression(char* expression) {
         } else if(isalpha(e)) {
             res[idx] = tolower(e);
             idx++;
+            lastLetter = e;
+            if(i < size - 1) {
+                e = expression[i+1];
+                if(e == ' ') {
+                    while(i < size && e == ' ') {
+                        i++;
+                        e = expression[i];
+                    }
+                    i--;
+                    continue;
+                    if(isalpha(e) || isdigit(e)) {
+                        cerr << "Synthax error detected." << endl;
+                        throw runtime_error("Synthax error");
+                    }
+                }
+            }
         } else if(isdigit(e)) {
             res[idx] = e;
             idx++;
@@ -73,21 +74,22 @@ char* preprocessExpression(char* expression) {
                     idx++;
                 }
             }
-            // Check after
-            if(i < size-1) {
-                if(expression[i+1] == '=' || expression[i+1] == '!') {
-                    res[idx] = expression[i+1];
-                    idx++;
-                }
-            }
         } else {
             if(e == ';') {
+                if(lastLetter == e) {
+                    cerr << "Synthax error detected." << endl;
+                    throw runtime_error("Synthax error");
+                }
                 res[idx] = e;
-            } else if(e == ' ') {
+                idx++;
+            } else if (e == ',') {
+                res[idx] = e;
+                idx++;
+            }
+            else if(e == ' ') {
                 continue;
             } else {
                 // Error -> Logical error
-                cout << e << endl;
                 cerr << "Logical error detected." << endl;
                 throw runtime_error("Logical error");
             }

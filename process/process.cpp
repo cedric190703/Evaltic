@@ -2,24 +2,32 @@
 
 int getFunctionResult(char* stc, size_t idx, size_t size) {
     // TODO
+    return 1;
 }
 
 int isFunction(char* stc, size_t idx, size_t size) {
     // TODO
+    return 1;
 }
 
 int getVarRes(char* var, map<string, int>) {
-    // TODO
+    return 1;
 }
 
 int getTernary(char* stc, size_t idx, size_t size) {
     // TODO
+    return 1;
 }
 
 int getLogicalOp(char* stc, size_t idx, size_t size) {
     // TODO
+    return 1;
 }
 
 int processExpression(char* expression) {
-    // TODO
+    size_t i = 0;
+    while(expression[i]) {
+        // TODO
+    }
+    return 1;
 }

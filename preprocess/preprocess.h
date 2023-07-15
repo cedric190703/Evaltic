@@ -1,4 +1,5 @@
 #pragma once
+#include "../Utils/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <cctype>
@@ -6,7 +7,6 @@
 
 using namespace std;
 
-size_t getSize(char* expression);
 int getSign(char* expression, size_t* idx, size_t size);
 int checkName(char* name);
 int isOperator(char e);
