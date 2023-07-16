@@ -12,37 +12,41 @@ int getSign(char* expression, size_t* idx, size_t size) {
     return cpt;
 }
 
-char* preprocessExpression(char* expression) {
+char** preprocessExpression(char* expression, int* nbStr) {
     size_t size = getSize(expression);
     char lastLetter = '$';
-    char* res = (char*)malloc((size+2)*sizeof(char));
-    size_t i;
+    char** res = (char**)malloc((*nbStr+2)*sizeof(char*));
     size_t idx = 0;
-    char  e;
+    res[*nbStr] = (char*)malloc((idx+2)*sizeof(char));
+    size_t i;
+    char e;
     int lastSemiColon = 1;
     for(i = 0; i < size; i++) {
         e = expression[i];
         if(isOperator(e)) {
             // Operator
             if(e != '+' && e != '-') {
-                res[idx] = (e == '.') ? '*' : e;
+                res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
+                res[*nbStr][idx] = (e == '.') ? '*' : e;
                 idx++;
             } else {
                 // Case series of operations + and -
                 int sign = getSign(expression, &i, size);
                 if(isalpha(lastLetter) || isdigit(lastLetter) || lastLetter == ')') {
-                    cout << i << endl;
-                    res[idx] = (sign % 2 == 0) ? '+' : '-';
+                    res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
+                    res[*nbStr][idx] = (sign % 2 == 0) ? '+' : '-';
                     idx++;
                 } else {
                     if(sign % 2 != 0) {
-                        res[idx] = '-';
+                        res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
+                        res[*nbStr][idx] = '-';
                         idx++;
                     }
                 }
             }
         } else if(isalpha(e)) {
-            res[idx] = tolower(e);
+            res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
+            res[*nbStr][idx] = tolower(e);
             idx++;
             lastLetter = e;
             if(i < size - 1) {
@@ -53,15 +57,16 @@ char* preprocessExpression(char* expression) {
                         e = expression[i];
                     }
                     i--;
-                    continue;
                     if(isalpha(e) || isdigit(e)) {
                         cerr << "Synthax error detected." << endl;
                         throw runtime_error("Synthax error");
                     }
                 }
             }
+            continue;
         } else if(isdigit(e)) {
-            res[idx] = e;
+            res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
+            res[*nbStr][idx] = e;
             idx++;
         } else if(islogicalOperator(e)) {
             // Check before
@@ -70,7 +75,8 @@ char* preprocessExpression(char* expression) {
                     cerr << "Synthax error detected." << endl;
                     throw runtime_error("Synthax error");
                 } else {
-                    res[idx] = e;
+                    res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
+                    res[*nbStr][idx] = e;
                     idx++;
                 }
             }
@@ -80,10 +86,16 @@ char* preprocessExpression(char* expression) {
                     cerr << "Synthax error detected." << endl;
                     throw runtime_error("Synthax error");
                 }
-                res[idx] = e;
-                idx++;
+                if(i < size) {
+                    res[*nbStr][idx] = '\0';
+                    ++*nbStr;
+                    res = (char**)realloc(res,(*nbStr+2)*sizeof(char*));
+                    idx = 0;
+                    res[*nbStr] = (char*)malloc((idx+2)*sizeof(char));
+                }
             } else if (e == ',') {
-                res[idx] = e;
+                res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
+                res[*nbStr][idx] = e;
                 idx++;
             }
             else if(e == ' ') {
@@ -96,10 +108,7 @@ char* preprocessExpression(char* expression) {
         }
         lastLetter = e;
     }
-    if(res[idx-1] != ';') {
-        res[idx] = ';';
-        idx++;
-    }
-    res[idx] = 0;
+    res[*nbStr][idx] = 0;
+    ++*nbStr;
     return res;
 }

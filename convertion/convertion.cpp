@@ -2,8 +2,8 @@
 
 int priorite(char op) {
     switch(op) {
-        case '+' :
-        case '-' :
+        case '+':
+        case '-':
             return 1;
         case '*' :
         case '/' :
@@ -11,8 +11,8 @@ int priorite(char op) {
             return 2;
         case '^' :
             return 3;
-        case '>' :
         case '<' :
+        case '>' :
         case '=' :
             return 4;
         default :
@@ -20,28 +20,45 @@ int priorite(char op) {
     }
 }
 
-const char* convertExpressionRecursive(const string& expression, size_t size,
-    stack<char>& operators, stringstream& postfix, size_t* i, int isFun) {
+int* resizeArrayFun(int* arr, int currentSize, int newSize) {
+    int* resizedArray = new int[newSize];
+    // Copy elements from the original array to the resized array
+    for (int i = 0; i < currentSize && i < newSize; ++i) {
+        resizedArray[i] = arr[i];
+    }
+    // Delete the original array
+    delete[] arr;
+    return resizedArray;
+}
+
+stack<string> reverseStack(stack<string> original) {
+    stack<string> destination;
+    while(!original.empty()) {
+        destination.push(original.top());
+        original.pop();
+    }
+    return destination;
+}
+
+void convertExpressionRecursive(
+const string& expression,
+size_t size,
+stack<char>& operators,
+stack<string>& res,
+size_t* i, 
+LinkedList list) {
     if (*i >= size) {
         while (!operators.empty()) {
-            postfix << operators.top();
+            res.push(string(1,operators.top()));
             operators.pop();
         }
-        string postfixStr = postfix.str();
-        return postfixStr.c_str();
+        return;
     }
 
     char e = expression[*i];
-
-    if (e == ';') {
-        while (!operators.empty()) {
-            postfix << operators.top();
-            operators.pop();
-        }
-        postfix << e;
-    } else if (isOperatorConversion(e) || islogicalOpConversion(e)) {
+    if (isOperatorConversion(e) || islogicalOpConversion(e)) {
         while (!operators.empty() && operators.top() != '(' && priorite(e) <= priorite(operators.top())) {
-            postfix << operators.top();
+            res.push(string(1,operators.top()));
             operators.pop();
         }
         operators.push(e);
@@ -49,20 +66,22 @@ const char* convertExpressionRecursive(const string& expression, size_t size,
         operators.push(e);
     } else if (e == ')') {
         while (!operators.empty() && operators.top() != '(') {
-            postfix << operators.top();
+            res.push(string(1,operators.top()));
             operators.pop();
         }
-        if (!operators.empty() && operators.top() == '(') {
-            operators.pop();
+        if (operators.empty() || operators.top() != '(') {
+            throw runtime_error("Synthax error");
         }
-        if(isFun) {
-            postfix << ')';
-            isFun = 0;
+        operators.pop();
+        // Check if there is a functionName to insert
+        if(list.getSize() > 0) {
+            string name = list.deleteFirstElement();
+            res.push(name);
         }
     } else if (isalpha(e)) {
         // Function call
-        string functionName;
         size_t j = *i;
+        string functionName;
         while (isalpha(expression[j])) {
             functionName += expression[j];
             ++j;
@@ -70,18 +89,29 @@ const char* convertExpressionRecursive(const string& expression, size_t size,
         *i = j - 1;
         if(*i < size - 1) {
             if(expression[*i+1] == '(') {
-                postfix << functionName;
-                postfix << '(';
                 ++*i;
-                convertExpressionRecursive(expression, size, operators, postfix, i, 1);
+                list.addElement(functionName);
+                convertExpressionRecursive(expression, size, operators, res, i, list);
             } else {
-                postfix << functionName;
+                res.push(functionName);
             }
+        } else {
+            res.push(functionName);
         }
-        
+    } else if(isdigit(e)) {
+        size_t j = *i;
+        int val = 0;
+        while (isdigit(expression[j])) {
+            val = val * 10 + (expression[j] - '0');
+            ++j;
+        }
+        *i = j - 1;
+        res.push(to_string(val));
     } else {
-        postfix << e;
+        if(e != ',') {
+            res.push(string(1,e));
+        }
     }
     ++*i;
-    return convertExpressionRecursive(expression, size, operators, postfix, i, isFun);
+    return convertExpressionRecursive(expression, size, operators, res, i, list);
 }

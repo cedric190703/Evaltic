@@ -12,7 +12,7 @@ int mul(int a, int b) {
     return a * b;
 }
 
-int sous(int a ,int b) {
+int sub(int a ,int b) {
     return a - b;
 }
 
@@ -20,7 +20,7 @@ int modulo(int a ,int b) {
     return a % b;
 }
 
-int absF(int a) {
+int absf(int a) {
     return a < 0 ? -a : a;
 }
 
@@ -38,10 +38,6 @@ int exp(int a) {
 
 int log(int a) {
     return log(a);
-}
-
-int log10(int a) {
-    return log10(a);
 }
 
 int max(int a, int b) {
@@ -63,3 +59,8 @@ int fibo(int a) {
     return n;
 }
 
+int isFunction(string e) {
+    return (e == "div" || e == "add" || e == "mul" || e == "sub" ||
+    e == "mod" || e == "abs" || e == "pow" || e == "exp" || e == "log" ||
+    e == "max" || e == "min" || e == "fibo") ? 1 : 0;
+}

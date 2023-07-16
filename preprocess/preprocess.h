@@ -8,7 +8,6 @@
 using namespace std;
 
 int getSign(char* expression, size_t* idx, size_t size);
-int checkName(char* name);
 int isOperator(char e);
 char* getDigit(char* expression, size_t size);
 int islogicalOperator(char e);
@@ -25,4 +24,4 @@ int islogicalOperator(char e);
 // Add a ; at the end for the process part
 // If mutliple ;; -> 3++--+4 ;;; => Error
 // Correct -> -a = 42; => in the next part -> a = -42
-char* preprocessExpression(char* expression);
+char** preprocessExpression(char* expression, int* nbStr);
