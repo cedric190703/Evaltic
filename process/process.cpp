@@ -131,6 +131,7 @@ int processExpression(stack<string> expression) {
     vector<int> tab;
     stack<int> exp;
     map<string, int> variables;
+    int lastVar;
     int stateVar = 0;
     string varToInit;
     while(!expression.empty()) {
@@ -172,6 +173,7 @@ int processExpression(stack<string> expression) {
             if(stateVar) {
                 int op = exp.top();
                 exp.pop();
+                lastVar = op;
                 setVar(varToInit, op, variables);
                 stateVar = 0;
             }
@@ -285,7 +287,11 @@ int processExpression(stack<string> expression) {
         res = exp.top();
         exp.pop();
     } else {
-        throw invalid_argument("Error");
+        if(variables.size() > 0) {
+            res = lastVar;
+        } else {
+            throw invalid_argument("Error");
+        }
     }
     return res;
 }

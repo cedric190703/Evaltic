@@ -31,26 +31,53 @@ This project is about to reproduce Abacus for operations.
 1 -> Syntax Error
 2 -> Logical error (undefined variables/symbols and invalid function calls/parentheses error)
 3 -> Math error (division by 0)
+</pre>
 
-Evaluate expressions with ; to tell the end of a 'line of code' like :
-=>a = 4; b = a +42; c = a * min(a,b) =>184
+Example of expression :
+<pre>
+a = 4; b = a +42; c = a * max(a,b);
+OUTPUT :
+Preprocessing part :
+
+a=4b=a+42c=a*max(a,b)
+
+----------------------
+
+Convert into a postix expression :
+
+a | = | 4 | = | ; | b | = | a | 42 | + | = | ; | c | = | a | a | b | max | * | = | ; | ; | 
+
+----------------------
+
+process part :
+
+result -> 184
 </pre>
 
 Structure of the project :
 <pre>
 .
+├── convertion
+│   ├── convertion.cpp
+│   └── convertion.h
 ├── functions
-│   ├── functions.cpp
-│   └── functions.h
+│   ├── functions.cpp
+│   └── functions.h
+├── LinkedList
+│   ├── LinkedList.cpp
+│   └── LinkedList.h
 ├── main.cpp
 ├── Makefile
 ├── preprocess
-│   ├── preprocess.cpp
-│   └── preprocess.h
+│   ├── preprocess.cpp
+│   └── preprocess.h
 ├── process
-│   ├── process.cpp
-│   └── process.h
-└── README.md
+│   ├── process.cpp
+│   └── process.h
+├── README.md
+└── Utils
+    ├── utils.cpp
+    └── utils.h
 
-3 directories, 9 files
+6 directories, 15 files
 </pre>

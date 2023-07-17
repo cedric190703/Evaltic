@@ -16,11 +16,14 @@ int main(int argc, char* argv[]) {
 
     // Preprocessing part
     int size = 0;
+    cout << endl;
+    cout << "Preprocessing part :" << endl << endl;
     char** expression = preprocessExpression(argv[1], &size);
     for(int x = 0; x < size; x++) {
         printf("%s", expression[x]);
     }
-    cout << endl;
+    cout << endl << endl;
+    cout << "----------------------" << endl << endl;
 
     // Convert part
     stack<string> res;
@@ -33,18 +36,22 @@ int main(int argc, char* argv[]) {
         res.push(string(1,';'));
     }
     
+    // Displaying postfix stack part
     stack<string> postfix = reverseStack(res);
-
-    /*while(!postfix.empty()) {
-        cout << postfix.top() << " | ";
-        postfix.pop();
+    cout << "Convert into a postix expression :" << endl << endl;
+    stack<string> display(postfix);
+    while(!display.empty()) {
+        cout << display.top() << " | ";
+        display.pop();
     }
-    cout << endl;*/
-    cout << "process part" << endl;
+    cout << endl << endl;
+    cout << "----------------------" << endl << endl;
+    cout << "process part :" << endl;
 
     // Processing part
     int result = processExpression(postfix);
-    cout << result << endl;
+    cout << endl;
+    cout << "result -> " << result << endl;
 
     // Free memory here
     freedMemory(expression, size);

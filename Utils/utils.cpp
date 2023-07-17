@@ -13,7 +13,7 @@ int islogicalOpConversion(char e) {
 }
 
 int islogicalOperator(char e) {
-    return (e == '=' || e == '<' || e == '>') ? 1 : 0;
+    return (e == '=' || e == '<' || e == '>' || e == '!') ? 1 : 0;
 }
 
 int isTernaryOp(char e) {

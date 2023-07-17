@@ -13,7 +13,6 @@ int priorite(string op) {
             return 3;
         case '<' :
         case '>' :
-        case '=' :
         case '?' :
         case ':' :
             return 4;
@@ -60,8 +59,8 @@ LinkedList list) {
         return;
     }
     char e = expression[*i];
+    string ep = string(1,e);
     if (isOperatorConversion(e) || isTernaryOp(e)) {
-        string ep = string(1,e);
         while (!operators.empty() && operators.top()[0] != '(' && priorite(ep) <= priorite(operators.top())) {
             res.push(operators.top());
             operators.pop();
@@ -74,6 +73,8 @@ LinkedList list) {
             if(expression[*i+1] == '=') {
                 p += '=';
                 ++*i;
+            } else if(e == '=') {
+                res.push(p);
             }
         }
         operators.push(p);
