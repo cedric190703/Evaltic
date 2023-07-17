@@ -131,16 +131,7 @@ int getTernary(char* stc, size_t idx, size_t size) {
     return 1;
 }
 
-int getLogicalOp(char* stc, size_t idx, size_t size) {
-    // TODO
-    return 1;
-}
-
-// Function type
-typedef int (*OperationFunction)(int, int);
-
 int processExpression(stack<string> expression) {
-    OperationFunction operation = nullptr;
     int res;
     vector<int> tab;
     stack<int> exp;
@@ -226,7 +217,26 @@ int processExpression(stack<string> expression) {
                     }
                     exp.push(op1 % op2);
                     break;
+                case '<':
+                    if(e == "<=") {
+                        exp.push(op1 <= op2);
+                    } else {
+                        exp.push(op1 < op2);
+                    }
+                    break;
+                case '>':
+                    if(e == ">=") {
+                        exp.push(op1 >= op2);
+                    } else {
+                        exp.push(op1 > op2);
+                    }
+                    break;
                 default:
+                    if(e == "!=") {
+                        exp.push(op1 != op2);
+                    } else if(e == "==") {
+                        exp.push(op1 == op2);
+                    }
                     cout << "->" << e << "<-" << endl;
                     throw invalid_argument("Syntax Error - invalid operator");
             }
@@ -235,6 +245,8 @@ int processExpression(stack<string> expression) {
     if(!exp.empty()) {
         res = exp.top();
         exp.pop();
+    } else {
+        throw invalid_argument("Error");
     }
     return res;
 }

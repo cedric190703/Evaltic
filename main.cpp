@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     // Convert part
     stack<string> res;
     for(int x = 0; x < size; x++) {
-        stack<char> operators;
+        stack<string> operators;
         LinkedList list;
         size_t size = getSize(expression[x]);
         size_t i = 0;
@@ -36,11 +36,11 @@ int main(int argc, char* argv[]) {
     stack<string> postfix = reverseStack(res);
 
     /*while(!postfix.empty()) {
-        cout << postfix.top();
+        cout << postfix.top() << " | ";
         postfix.pop();
     }
-    cout << endl;
-    cout << "process part" << endl;*/
+    cout << endl;*/
+    cout << "process part" << endl;
 
     // Processing part
     int result = processExpression(postfix);

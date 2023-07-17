@@ -1,7 +1,7 @@
 #include "convertion.h"
 
-int priorite(char op) {
-    switch(op) {
+int priorite(string op) {
+    switch(op[0]) {
         case '+':
         case '-':
             return 1;
@@ -16,6 +16,9 @@ int priorite(char op) {
         case '=' :
             return 4;
         default :
+            if(op == "<=" || op == ">=") {
+                return 4;
+            }
             return -1;
     }
 }
@@ -43,34 +46,44 @@ stack<string> reverseStack(stack<string> original) {
 void convertExpressionRecursive(
 const string& expression,
 size_t size,
-stack<char>& operators,
+stack<string>& operators,
 stack<string>& res,
 size_t* i, 
 LinkedList list) {
     if (*i >= size) {
         while (!operators.empty()) {
-            res.push(string(1,operators.top()));
+            res.push(operators.top());
             operators.pop();
         }
         return;
     }
-
     char e = expression[*i];
-    if (isOperatorConversion(e) || islogicalOpConversion(e)) {
-        while (!operators.empty() && operators.top() != '(' && priorite(e) <= priorite(operators.top())) {
-            res.push(string(1,operators.top()));
+    if (isOperatorConversion(e)) {
+        string ep = string(1,e);
+        while (!operators.empty() && operators.top()[0] != '(' && priorite(ep) <= priorite(operators.top())) {
+            res.push(operators.top());
             operators.pop();
         }
-        operators.push(e);
+        operators.push(ep);
+    } else if(islogicalOpConversion(e)) {
+        string p;
+        p += e;
+        if(*i < size-1) {
+            if(expression[*i+1] == '=') {
+                p += '=';
+                ++*i;
+            }
+        }
+        operators.push(p);
     } else if (e == '(') {
-        operators.push(e);
+        operators.push(string(1,e));
     } else if (e == ')') {
-        while (!operators.empty() && operators.top() != '(') {
-            res.push(string(1,operators.top()));
+        while (!operators.empty() && operators.top()[0] != '(') {
+            res.push(operators.top());
             operators.pop();
         }
-        if (operators.empty() || operators.top() != '(') {
-            throw runtime_error("Synthax error");
+        if (operators.empty() || operators.top()[0] != '(') {
+            throw runtime_error("Synthax error - parentheses.");
         }
         operators.pop();
         // Check if there is a functionName to insert
@@ -110,6 +123,11 @@ LinkedList list) {
     } else {
         if(e != ',') {
             res.push(string(1,e));
+        } else {
+            while (!operators.empty() && operators.top()[0] != '(') {
+                res.push(operators.top());
+                operators.pop();
+            }
         }
     }
     ++*i;

@@ -23,7 +23,7 @@ char** preprocessExpression(char* expression, int* nbStr) {
     int lastSemiColon = 1;
     for(i = 0; i < size; i++) {
         e = expression[i];
-        if(isOperator(e)) {
+        if(isOperator(e) || e == '=') {
             // Operator
             if(e != '+' && e != '-') {
                 res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
@@ -58,8 +58,7 @@ char** preprocessExpression(char* expression, int* nbStr) {
                     }
                     i--;
                     if(isalpha(e) || isdigit(e)) {
-                        cerr << "Synthax error detected." << endl;
-                        throw runtime_error("Synthax error");
+                        throw runtime_error("Synthax error - two variables.");
                     }
                 }
             }
@@ -68,23 +67,23 @@ char** preprocessExpression(char* expression, int* nbStr) {
             res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
             res[*nbStr][idx] = e;
             idx++;
-        } else if(islogicalOperator(e)) {
+        } else if(islogicalOpConversion(e)) {
             // Check before
             if(i != 0) {
-                if(isOperator(expression[i-1])) {
-                    cerr << "Synthax error detected." << endl;
-                    throw runtime_error("Synthax error");
+                if(islogicalOpConversion(expression[i-1])) {
+                    throw runtime_error("Synthax error - operator already in the last character.");
                 } else {
                     res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
                     res[*nbStr][idx] = e;
                     idx++;
                 }
+            } else {
+                throw runtime_error("Synthax error - cannot have a logical parameter in the first character of the expression.");
             }
         } else {
             if(e == ';') {
                 if(lastLetter == e) {
-                    cerr << "Synthax error detected." << endl;
-                    throw runtime_error("Synthax error");
+                    throw runtime_error("Synthax error - too many ';' in a row.");
                 }
                 if(i < size) {
                     res[*nbStr][idx] = '\0';
@@ -101,9 +100,8 @@ char** preprocessExpression(char* expression, int* nbStr) {
             else if(e == ' ') {
                 continue;
             } else {
-                // Error -> Logical error
-                cerr << "Logical error detected." << endl;
-                throw runtime_error("Logical error");
+                cout << e << endl;
+                throw runtime_error("Logical error - character not recognized.");
             }
         }
         lastLetter = e;

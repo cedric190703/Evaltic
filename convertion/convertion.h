@@ -10,13 +10,13 @@
 
 using namespace std;
 
-int priorite(char op);
+int priorite(string op);
 stack<string> reverseStack(stack<string> original);
 int* resizeArrayFun(int* arr, int currentSize, int newSize);
 void convertExpressionRecursive(
 const string& expression,
 size_t size,
-stack<char>& operators,
+stack<string>& operators,
 stack<string>& res,
 size_t* i, 
 LinkedList list);
