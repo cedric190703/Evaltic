@@ -14,9 +14,11 @@ int priorite(string op) {
         case '<' :
         case '>' :
         case '=' :
+        case '?' :
+        case ':' :
             return 4;
         default :
-            if(op == "<=" || op == ">=") {
+            if(op == "<=" || op == ">=" || op == "!=" || op == "==") {
                 return 4;
             }
             return -1;
@@ -58,14 +60,14 @@ LinkedList list) {
         return;
     }
     char e = expression[*i];
-    if (isOperatorConversion(e)) {
+    if (isOperatorConversion(e) || isTernaryOp(e)) {
         string ep = string(1,e);
         while (!operators.empty() && operators.top()[0] != '(' && priorite(ep) <= priorite(operators.top())) {
             res.push(operators.top());
             operators.pop();
         }
         operators.push(ep);
-    } else if(islogicalOpConversion(e)) {
+    } else if(islogicalOperator(e)) {
         string p;
         p += e;
         if(*i < size-1) {

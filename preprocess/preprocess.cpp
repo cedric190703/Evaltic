@@ -99,8 +99,16 @@ char** preprocessExpression(char* expression, int* nbStr) {
             }
             else if(e == ' ') {
                 continue;
+            } else if(e == '?' || e == ':') {
+                if(isdigit(lastLetter) || isalpha(lastLetter) || lastLetter == ')') {
+                    res[*nbStr] = (char*)realloc(res[*nbStr],(idx+3)*sizeof(char));
+                    res[*nbStr][idx] = e;
+                    idx++;
+                } else {
+                    throw runtime_error("Logical error - in the ternary statement.");
+                }
             } else {
-                cout << e << endl;
+                cout << "-> " << e << " <-" << endl;
                 throw runtime_error("Logical error - character not recognized.");
             }
         }

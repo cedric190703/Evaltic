@@ -126,11 +126,6 @@ int getVarRes(string var, map<string, int>& variables) {
     return variables[var];
 }
 
-int getTernary(char* stc, size_t idx, size_t size) {
-    // TODO
-    return 1;
-}
-
 int processExpression(stack<string> expression) {
     int res;
     vector<int> tab;
@@ -187,37 +182,76 @@ int processExpression(stack<string> expression) {
             }
         } else if(exp.size() >= 2 && !isFunction(e)){
             int resu;
+            int log;
             int op2 = exp.top();
             exp.pop();
-            int op1 = exp.top();
-            exp.pop();
+            int op1;
             switch(e[0]) {
                  case '+':
+                    op1 = exp.top();
+                    exp.pop();
                     exp.push(op1 + op2);
                     break;
                 case '-':
+                    op1 = exp.top();
+                    exp.pop();
                     exp.push(op1 - op2);
                     break;
                 case '*':
+                    op1 = exp.top();
+                    exp.pop();
                     exp.push(op1 * op2);
                     break;
                 case '^':
+                    op1 = exp.top();
+                    exp.pop();
                     resu = power(op1, op2);
                     exp.push(resu);
                     break;
                 case '/':
+                    op1 = exp.top();
+                    exp.pop();
                     if(op2 == 0) {
                         throw invalid_argument("Logical error - division by 0.");
                     }
                     exp.push(op1 / op2);
                     break;
+                case '?':
+                    op1 = exp.top();
+                    exp.pop();
+                    if(op1 < 0 || op1 > 1) {
+                        cout << op1 << endl;
+                        throw invalid_argument("Syntax Error - ternary error (not a logical operation).");
+                    } else {
+                        if(op1) {
+                            while(!expression.empty() && expression.top()[0] != ':') {
+                                expression.pop();
+                            }
+                            if(expression.empty()) {
+                                throw invalid_argument("Syntax Error - ternary error (not the correct syntax -> ?val1:val2).");
+                            } else {
+                                expression.pop();
+                            }
+                            exp.push(op2);
+                        }
+                    }
+                    break;
+                case ':':
+                    // We are considering that here the statement is correct for ternary operations
+                    // And the logical operation is false so we have to take the statement for the ':'
+                    exp.push(op2);
+                    break;
                 case '%':
+                    op1 = exp.top();
+                    exp.pop();
                     if(op2 == 0) {
                         throw invalid_argument("Logical error - division by 0.");
                     }
                     exp.push(op1 % op2);
                     break;
                 case '<':
+                    op1 = exp.top();
+                    exp.pop();
                     if(e == "<=") {
                         exp.push(op1 <= op2);
                     } else {
@@ -225,6 +259,8 @@ int processExpression(stack<string> expression) {
                     }
                     break;
                 case '>':
+                    op1 = exp.top();
+                    exp.pop();
                     if(e == ">=") {
                         exp.push(op1 >= op2);
                     } else {
@@ -232,13 +268,16 @@ int processExpression(stack<string> expression) {
                     }
                     break;
                 default:
+                    op1 = exp.top();
+                    exp.pop();
                     if(e == "!=") {
                         exp.push(op1 != op2);
                     } else if(e == "==") {
                         exp.push(op1 == op2);
+                    } else {
+                        cout << "-> " << e << " <-" << endl;
+                        throw invalid_argument("Syntax Error - invalid operator");
                     }
-                    cout << "->" << e << "<-" << endl;
-                    throw invalid_argument("Syntax Error - invalid operator");
             }
         }
     }

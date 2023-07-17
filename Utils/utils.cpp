@@ -16,6 +16,10 @@ int islogicalOperator(char e) {
     return (e == '=' || e == '<' || e == '>') ? 1 : 0;
 }
 
+int isTernaryOp(char e) {
+    return (e == '?' || e == ':') ? 1 : 0;
+}
+
 size_t getSize(char* expression) {
     size_t size = 0;
     while(expression[size]) {

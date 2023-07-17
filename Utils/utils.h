@@ -5,4 +5,5 @@ int isOperatorConversion(char e);
 int isOperator(char e);
 int islogicalOpConversion(char e);
 int islogicalOperator(char e);
+int isTernaryOp(char e);
 size_t getSize(char* expression);
