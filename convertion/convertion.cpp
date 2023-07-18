@@ -91,8 +91,17 @@ LinkedList list) {
         operators.pop();
         // Check if there is a functionName to insert
         if(list.getSize() > 0) {
-            string name = list.deleteFirstElement();
-            res.push(name);
+            int isVirgule;
+            string name = list.deleteFirstElement(&isVirgule);
+            if(isVirgule) {
+                res.push(name);
+            } else {
+                if(name == "fibo" || name == "abs" || name == "log" || name == "exp") {
+                    res.push(name);
+                } else {
+                    throw runtime_error("Synthax error - member missing in the function assignement.");
+                }
+            }
         }
     } else if (isalpha(e)) {
         // Function call
@@ -127,10 +136,20 @@ LinkedList list) {
         if(e != ',') {
             res.push(string(1,e));
         } else {
-            while (!operators.empty() && operators.top()[0] != '(') {
-                res.push(operators.top());
-                operators.pop();
+            if(*i > 0) {
+                if(expression[*i-1] != '(' && *i < size - 1 && expression[*i+1] != ')') {
+                    list.setVirgule();
+                    while (!operators.empty() && operators.top()[0] != '(') {
+                        res.push(operators.top());
+                        operators.pop();
+                    }
+                } else {
+                    throw runtime_error("Synthax error - function assignement - second part.");
+                }
+            } else {
+                throw runtime_error("Synthax error - function assignement - first part.");
             }
+            
         }
     }
     ++*i;

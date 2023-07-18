@@ -3,118 +3,70 @@
 int evaluateFunction(string functionName, stack<int>& arguments) {
     // Check the number of parameters for each 
     if(functionName == "div") {
-        if(arguments.size() >= 2) {
-            int a = arguments.top();
-            arguments.pop();
-            int b = arguments.top();
-            arguments.pop();
-            return divi(a,b);
-        } else {
-            throw runtime_error("Synthax error - div");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        int b = arguments.top();
+        arguments.pop();
+        return divi(a,b);
     } else if(functionName == "add") {
-        if(arguments.size() >= 2) {
-            int a = arguments.top();
-            arguments.pop();
-            int b = arguments.top();
-            arguments.pop();
-            return add(a,b);
-        } else {
-            throw runtime_error("Synthax error - add");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        int b = arguments.top();
+        arguments.pop();
+        return add(a,b);
     } else if(functionName == "sub") {
-        if(arguments.size() >= 2) {
-            int a = arguments.top();
-            arguments.pop();
-            int b = arguments.top();
-            arguments.pop();
-            return sub(a,b);
-        } else {
-            throw runtime_error("Synthax error - sub");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        int b = arguments.top();
+        arguments.pop();
+        return sub(a,b);
     } else if(functionName == "mul") {
-        if(arguments.size() >= 2) {
-            int a = arguments.top();
-            arguments.pop();
-            int b = arguments.top();
-            arguments.pop();
-            return mul(a,b);
-        } else {
-            throw runtime_error("Synthax error - mul");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        int b = arguments.top();
+        arguments.pop();
+        return mul(a,b);
     } else if(functionName == "mod") {
-        if(arguments.size() >= 2) {
-            int a = arguments.top();
-            arguments.pop();
-            int b = arguments.top();
-            arguments.pop();
-            return modulo(a,b);
-        } else {
-            throw runtime_error("Synthax error - mod");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        int b = arguments.top();
+        arguments.pop();
+        return modulo(a,b);
     } else if(functionName == "abs") {
-        if(arguments.size() >= 1) {
-            int a = arguments.top();
-            arguments.pop();
-            return abs(a);
-        } else {
-            throw runtime_error("Synthax error - abs");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        return abs(a);
     } else if(functionName == "pow") {
-        if(arguments.size() >= 2) {
-            int a = arguments.top();
-            arguments.pop();
-            int b = arguments.top();
-            arguments.pop();
-            return power(a,b);
-        } else {
-            throw runtime_error("Synthax error - pow");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        int b = arguments.top();
+        arguments.pop();
+        return power(a,b);
     } else if(functionName == "exp") {
-        if(arguments.size() >= 1) {
-            int a = arguments.top();
-            arguments.pop();
-            return exp(a);
-        } else {
-            throw runtime_error("Synthax error - exp");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        return exp(a);
     } else if(functionName == "log") {
-        if(arguments.size() >= 1) {
-            int a = arguments.top();
-            arguments.pop();
-            return log(a);
-        } else {
-            throw runtime_error("Synthax error - log");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        return log(a);
     } else if(functionName == "max") {
-        if(arguments.size() >= 2) {
-            int a = arguments.top();
-            arguments.pop();
-            int b = arguments.top();
-            arguments.pop();
-            return max(a,b);
-        } else {
-            throw runtime_error("Synthax error - max");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        int b = arguments.top();
+        arguments.pop();
+        return max(a,b);
     } else if(functionName == "min") {
-        if(arguments.size() >= 2) {
-            int a = arguments.top();
-            arguments.pop();
-            int b = arguments.top();
-            arguments.pop();
-            return min(a,b);
-        } else {
-            throw runtime_error("Synthax error - min");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        int b = arguments.top();
+        arguments.pop();
+        return min(a,b);
     } else {
         // Fibo
-        if(arguments.size() >= 1) {
-            int a = arguments.top();
-            arguments.pop();
-            return fibo(a);
-        } else {
-            throw runtime_error("Synthax error - fibo");
-        }
+        int a = arguments.top();
+        arguments.pop();
+        return fibo(a);
     }
 }
 
