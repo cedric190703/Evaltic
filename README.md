@@ -1,8 +1,6 @@
-# Abacus
-This project is about to reproduce Abacus for operations.
-
+# Evaltic
 <pre>
-This porject have 3 parts :
+This project has 3 parts :
 1 => Preprocessing on the expression to cleanup the expression or detect a potential error.
 
 2 => Shunting yard for converting the arrays of expression from the preprocessing part into a postfix expression.
@@ -65,7 +63,7 @@ result -> 184
 This project also got a test suite for multiple examples for testing the code :
 
 example of it :
-Tests for Abacus : 
+Tests for Evaluation : 
 -----------------------------
 
 Test (0/10) :
